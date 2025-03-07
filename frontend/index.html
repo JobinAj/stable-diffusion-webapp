@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stable Diffusion Web App</title>
+    <script>
+        async function generateImage() {
+            const prompt = document.getElementById("prompt").value;
+            const response = await fetch("http://localhost:8000/generate/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ prompt })
+            });
+            const data = await response.json();
+            if (data.image_url) {
+                document.getElementById("output").src = "http://localhost:8000" + data.image_url;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Stable Diffusion Web App</h1>
+    <input type="text" id="prompt" placeholder="Enter text prompt">
+    <button onclick="generateImage()">Generate</button>
+    <br>
+    <img id="output" width="512">
+</body>
+</html>
